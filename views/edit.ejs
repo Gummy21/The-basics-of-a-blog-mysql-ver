@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+   
+    <form class="ui small form center" action="/blog/<%= blog._id %>/?_method=PUT" method="POST">
+        <div class=" four wide field">
+            <input type="text" name="blog[title]" value="<%= blog.title %>">
+        </div>
+        <div class="six wide field ">
+            <textarea name="blog[content]"></textarea>
+        </div>
+        <button class="ui button" type="submit">Submit</button>
+    </form>
+    
+
+
+
+
+
+<%- include('partials/footer') %>

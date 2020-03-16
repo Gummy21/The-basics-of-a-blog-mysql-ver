@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+            <link type="text/css" rel="stylesheet" href="../stylesheets/main.css"/>
+    </head>
+    <body>
+        <div class="ui container">
+                 <div class="ui large secondary menu">
+                                 <a class="item" href="/">Home</a>
+                                  <a class="item" href="/blog">Blogs</a>
+                                  
+                         <div class="right menu">
+                                <div id="searchb" class="ui category search">
+                                <form action="/blog/results" method="POST">
+                                   <div class="ui action input">
+                                        <input name="searchData" type="text" placeholder="Search blogs...">
+                                        <button class="ui button"><i class="search icon"></i></button>
+                                    </div>
+                                </form>
+                        </div>
+                        <% if(!currentUser){ %>
+                                  <a class="item" href="/login">Login</a>
+                                  <a class="item" href="/register">Register</a>
+                        <% } else { %>
+                                <a class="item" href="#">Logged in as <%= currentUser.username%></a>
+                                <a class="item" href="/logout">Logout</a>
+                        <% } %>
+                       
+                        </div>            
+                </div> 
+                <!-- <div class="ui container">
+                        <%# if(error && error.length > 0){ %>
+                                <div class="ui red message" role="alert">
+                                        <%#= error %>
+                                </div>
+                                <%# } %>
+                                <%# if(success && success.length > 0) { %>
+                                <div class="ui green message" role="alert">
+                                        <%#= success %>
+                                </div>
+                                 <%# } %>
+                </div> -->
+         <div>

@@ -1,0 +1,26 @@
+<%- include ('partials/header') %>
+<div class="container">
+    <div class="ui grid">
+        <div class="ui grid row centered">
+            <div class="ui grid column four wide ">
+                    <form class="ui large form centered" action="/login" method="POST">
+                        <div class="field">
+                            <label>Username</label>
+                            <input name="username"type="text" placeholder="Username">
+                        </div>
+                        <div class="field"></div>
+                            <label>Password</label>
+                            <input name="password" type="password" placeholder="Password">
+                        </div>
+                        <div class="ui grid row centered">
+                                <button class="ui button btn" type="submit">Submit</button>
+                           </div>  
+                </form>  
+            </div>
+         </div>
+    </div>
+</div>
+
+
+
+<%- include ('partials/footer') %>
