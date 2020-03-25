@@ -1,13 +1,30 @@
-module.exports = (sequelize, type) => {
-    return sequelize.define('blog', {
-        id: {
-          type: type.INTEGER,
+module.exports = (sequelize, Sequelize) => {
+      var Blog = sequelize.define('blog', {
+        id: { 
           primaryKey: true,
-          autoIncrement: true
+          autoIncrement: true,
+          type: Sequelize.INTEGER
         },
-        title: type.STRING,
-        content: type.STRING
-    })
+        title: Sequelize.STRING,
+        content: Sequelize.STRING,
+        createdAt: {
+          type: Sequelize.DATE,
+          defaultValue: sequelize.NOW
+        }
+    },{
+      freezeTableName: true,
+      timestamps: false
+    }
+    );
+    Blog.associate = (models) => {
+      Blog.belongsTo(models.user,{
+        onDelete: "CASCADE",
+        foreignKey: {
+          allowNull:false
+        }
+      })
+    };
+    return Blog;
 }
 // var blogSchema = new mongoose.Schema({
 //     title: String,

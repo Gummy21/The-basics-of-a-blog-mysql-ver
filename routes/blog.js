@@ -1,34 +1,40 @@
 var express = require("express");
 var router  = express.Router();
 var middleware = require("../middleware");
-const mysql = require("mysql");
-const {User, Blog} = require("../sequelize")
+
+const { User, Blog } = require('../sequelize')
 
 
 //INDEX
-router.get("/", function(req, res){
-    Blog.findAll({}, function(err, allBlogs){
-        if(err){
-            console.log(err)
-        } else{
+router.get("/", (req,res) => { 
+    Blog.findAll({attributes: ['title','content']}).then(function(allBlogs){  
             res.render("home", {blogs:allBlogs, currentUser: req.user});
-        }
     });
 });
+
+
+// router.get("/", function(req, res){
+//     models.Blog.findAll({},function(err, allBlogs){
+//         if(err){
+//             console.log(err)
+//         } else{
+//             res.render("home", {blogs:allBlogs, currentUser: req.user});
+//         }
+//     });
+// });
 //NEW
-router.get("/new",middleware.isLoggedIn,function(req,res){
+router.get("/new",function(req,res){
     res.render("new")
 });
 //Create
-router.post("/",middleware.isLoggedIn,function(req,res){
-   const name = req.body.name;
+router.post("/",function(req,res){
    const title = req.body.title;
    const  content = req.body.content;
-   const author = {
-       id: req.user._id,
-       username: req.user.username
-   };
-   const newBlog = {name: name, title: title, content: content, author:author};
+//    const author = {
+//        id: req.user.id,
+//        username: req.user.username
+//    };
+   const newBlog = { title: title, content: content};
    Blog.create(newBlog, function(err, newlyCreated){
     if(err){
         console.log(err)

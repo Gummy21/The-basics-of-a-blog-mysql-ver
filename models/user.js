@@ -1,14 +1,23 @@
-module.exports = (sequelize, type) => {
-    return sequelize.define('user', {
+
+module.exports = (sequelize,DataTypes) => {
+    var User = sequelize.define('user', {
+        email: DataTypes.STRING,
+        username: DataTypes.STRING,
+        password: DataTypes.STRING,
         id: {
-          type: type.INTEGER,
           primaryKey: true,
-          autoIncrement: true
-        },
-        email: type.STRING,
-        username: type.STRING,
-        password: type.STRING
-    })
+          autoIncrement: true,
+          type: DataTypes.INTEGER
+        }
+    },{
+      freezeTableName: true,
+      timestamps: false
+    }
+  );
+    User.associate = (models) => {
+      User.hasMany(models.blog);
+    };
+    return User
 }
 
 // var passportLocalMongoose = require("passport-local-mongoose");

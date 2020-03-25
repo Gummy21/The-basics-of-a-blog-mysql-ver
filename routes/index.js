@@ -1,8 +1,7 @@
 var express = require("express");
 var router  = express.Router();
 var passport = require("passport");
-var Blog    = require("../models/blog");
-var User   = require("../models/user");
+const {Blog, User} = require('../sequelize')
 
 
 
@@ -23,23 +22,20 @@ router.get("/login", function(req, res){
 
 //Register p2
 router.post("/register", function(req,res){
-   var newUser = new User({username: req.body.username, email: req.body.email});
-   User.register(newUser, req.body.password, function(err,user){
-    if(err){
-        console.log(err)
-        return res.render("register", {"error": err.message})
-    } 
-    passport.authenticate("local") (req,res, function(){
-        req.flash("success", "Welcome to blogo " + user.username);
+    var newUser = { username: req.body.username, email: req.body.email, password: req.body.password};
+   User.create(newUser, function(err){
+    passport.authenticate("local-signup") (req,res, function(){
         res.redirect("/");
     });
    });
 });
-//Login p2
-router.post("/login",passport.authenticate("local",{
-    successRedirect: "/blog",
-    failureRedirect: "/login"
-    }), function(req,res){
+// Login p2
+router.post("/login",
+// passport.authenticate("local",{
+// //     successRedirect: "/blog",
+// //     failureRedirect: "/login"
+//     }),
+     function(req,res){
 
 });
 
