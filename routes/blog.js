@@ -1,13 +1,10 @@
 var express = require("express");
 var router  = express.Router();
-var middleware = require("../middleware");
-
-const { User, Blog } = require('../sequelize')
-
+var db = require('../app/models');
 
 //INDEX
-router.get("/", (req,res) => { 
-    Blog.findAll({attributes: ['title','content']}).then(function(allBlogs){  
+router.get("/", function(req,res) { 
+   db.blog.findAll({attributes: ['title','content', 'id']}).then(function(allBlogs){  
             res.render("home", {blogs:allBlogs, currentUser: req.user});
     });
 });
@@ -30,46 +27,33 @@ router.get("/new",function(req,res){
 router.post("/",function(req,res){
    const title = req.body.title;
    const  content = req.body.content;
-//    const author = {
-//        id: req.user.id,
-//        username: req.user.username
-//    };
    const newBlog = { title: title, content: content};
-   Blog.create(newBlog, function(err, newlyCreated){
-    if(err){
-        console.log(err)
-    } else {
+   db.blog.create(newBlog, function(err, newlyCreated){
        res.redirect("/blog")
-    }
-
    });
 });
 //SHOW
 router.get("/:id", function(req,res){
-    Blog.findById(req.params.id, function(err, foundBlog){
-        if(err){
-            console.log(err)
-        } else{
+    db.blog.findAll({ where: {id: req.params.id},attributes: ['title','content','id'],limit: 1 }).then(function(foundBlog){
             res.render("show", {blog:foundBlog, currentUser: req.user});
-        }
     });
 });
 
 //EDIT
 router.get("/:id/edit", function(req,res){
-    Blog.findById(req.params.id, function(err, foundBlog){
+    db.blog.findByPk({where: {id: req.params.id}}, function(err, foundBlog){
         res.render("edit", {blog: foundBlog});
     });
 });
 
 //UPDATE
 router.put("/:id", function(req,res){
-    Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog){
+    db.blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog){
         if(err){
             res.redirect("/blog");
         } else {
             res.redirect("/blog/" + req.params.id);
-            console.log(typeof req.body.blog)
+          
         }
     });
 });
