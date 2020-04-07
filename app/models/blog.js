@@ -16,13 +16,13 @@ module.exports = function(sequelize, Datatypes){
       timestamps: false
     }
     );
-    // Blog.associate = (models) => {
-    //   Blog.belongsTo(models.user,{
-    //     onDelete: "CASCADE",
-    //     foreignKey: {
-    //       allowNull:false
-    //     }
-    //   })
-    // };
+    Blog.associate = (db) => {
+      Blog.belongsTo(db.user,{
+        onDelete: "CASCADE",
+        foreignKey: {
+          allowNull:false
+        }
+      })
+    };
     return Blog;
 }

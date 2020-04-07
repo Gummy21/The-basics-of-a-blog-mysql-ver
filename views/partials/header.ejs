@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -20,11 +21,11 @@
                                     </div>
                                 </form>
                         </div>
-                        <% if(!currentUser){ %>
+                        <% if(!user){ %>
                                   <a class="item" href="/login">Login</a>
                                   <a class="item" href="/register">Register</a>
                         <% } else { %>
-                                <a class="item" href="#">Logged in as <%= currentUser.username%></a>
+                                <a class="item" href="#">Logged in as <%= user.username%></a>
                                 <a class="item" href="/logout">Logout</a>
                         <% } %>
                        

@@ -4,21 +4,13 @@ var db = require('../app/models');
 
 //INDEX
 router.get("/", function(req,res) { 
-   db.blog.findAll({attributes: ['title','content', 'id']}).then(function(allBlogs){  
-            res.render("home", {blogs:allBlogs, currentUser: req.user});
+   db.blog.findAll({attributes: ['title','content','user.username'],
+    include: [{model: db.user, attributes: ['username']}]}).then(function(allBlogs){  
+            res.render("home", {blogs:allBlogs, user: req.session.user});
+            console.log(req.user)
     });
 });
 
-
-// router.get("/", function(req, res){
-//     models.Blog.findAll({},function(err, allBlogs){
-//         if(err){
-//             console.log(err)
-//         } else{
-//             res.render("home", {blogs:allBlogs, currentUser: req.user});
-//         }
-//     });
-// });
 //NEW
 router.get("/new",function(req,res){
     res.render("new")
@@ -34,7 +26,7 @@ router.post("/",function(req,res){
 });
 //SHOW
 router.get("/:id", function(req,res){
-    db.blog.findAll({ where: {id: req.params.id},attributes: ['title','content','id'],limit: 1 }).then(function(foundBlog){
+    db.blog.findAll({ where: {id: req.params.id},attributes: ['title','content'],limit: 1 }).then(function(foundBlog){
             res.render("show", {blog:foundBlog, currentUser: req.user});
     });
 });

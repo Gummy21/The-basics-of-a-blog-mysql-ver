@@ -37,6 +37,12 @@
 
 // };
 
-
+exports.isAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      res.locals.user = req.session.user
+      return next()
+    }
+    res.redirect('/')
+  }
 
 // module.exports = middlewareObj;
