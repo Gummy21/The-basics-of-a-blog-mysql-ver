@@ -4,10 +4,8 @@ var db = require('../app/models');
 
 //INDEX
 router.get("/", function(req,res) { 
-   db.blog.findAll({attributes: ['title','content','user.username'],
-    include: [{model: db.user, attributes: ['username']}]}).then(function(allBlogs){  
+   db.blog.findAll({include: [{model: db.user}]}).then(function(allBlogs){  
             res.render("home", {blogs:allBlogs, user: req.session.user});
-            console.log(req.user)
     });
 });
 
@@ -18,16 +16,18 @@ router.get("/new",function(req,res){
 //Create
 router.post("/",function(req,res){
    const title = req.body.title;
-   const  content = req.body.content;
-   const newBlog = { title: title, content: content};
-   db.blog.create(newBlog, function(err, newlyCreated){
+   const content = req.body.content;
+   const userId    = req.session.user.id
+   const newBlog = { title: title, content: content, userId: userId};
+   db.blog.create(newBlog, function(){
        res.redirect("/blog")
    });
 });
 //SHOW
 router.get("/:id", function(req,res){
-    db.blog.findAll({ where: {id: req.params.id},attributes: ['title','content'],limit: 1 }).then(function(foundBlog){
-            res.render("show", {blog:foundBlog, currentUser: req.user});
+    var id = req.params.id;
+    db.blog.findAll({where: {id}, attributes: ['title','content']}).then(function(foundBlog){
+            res.render("show", {blogs:foundBlog, currentUser: req.user});
     });
 });
 

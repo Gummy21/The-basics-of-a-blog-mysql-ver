@@ -10,7 +10,7 @@ module.exports = function(sequelize, Datatypes){
         createdAt: {
           type: Datatypes.DATE,
           defaultValue: sequelize.fn('NOW')
-        }
+        },
     },{
       freezeTableName: true,
       timestamps: false

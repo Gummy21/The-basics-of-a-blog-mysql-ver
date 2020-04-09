@@ -1,14 +1,13 @@
-const express      = require("express"),
-    app          = express(),
-    bodyParser   = require("body-parser"),
-    methodOverride = require("method-override"),
-    flash          = require("connect-flash"),
-    cookieParser    =require('cookie-parser')
-    isAuthenticated = require("./middleware");
-    db = require("./app/models/");
+const  express    = require("express"), 
+       app     = express(),
+       flash   = require("connect-flash"),
+       bodyParser   = require("body-parser"),
+       methodOverride = require("method-override"), 
+       cookieParser   = require('cookie-parser');
+ 
 
 
-
+db         = require("./app/models/");
 blogRoutes = require("./routes/blog");
 indexRoutes = require("./routes/index");
 
