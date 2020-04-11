@@ -45,7 +45,7 @@ router.post("/login",function(req,res){
         } else {
           bcrypt.compare(req.body.password, user.password, function (err,result) {
             if(result == true) {
-                req.session.user = result;
+                req.session.user = user.dataValues;
               res.redirect('/blog');
             } else {
               res.redirect('/login')
@@ -57,8 +57,12 @@ router.post("/login",function(req,res){
 
 //Logout
 router.get("/logout", function(req,res){
-    req.logout();
-    res.redirect("/")
+  if (req.session.user && req.cookies.user_sid) {
+    res.clearCookie('user_sid');
+    res.redirect('/');
+} else {
+    res.redirect('/login');
+}
 });
 
 

@@ -25,6 +25,7 @@ app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 app.use(flash());
 app.use(require("express-session")({
+    key: 'user_sid',
     resave: false,
     saveUninitialized: false,
     secret: 'A big snake',

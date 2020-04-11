@@ -26,40 +26,36 @@ router.post("/",function(req,res){
 //SHOW
 router.get("/:id", function(req,res){
     var id = req.params.id;
-    db.blog.findAll({where: {id}, attributes: ['title','content']}).then(function(foundBlog){
+    db.blog.findAll({where: {id}, attributes: ['title','content', 'userId', 'id']}).then(function(foundBlog){
             res.render("show", {blogs:foundBlog, currentUser: req.user});
-    });
+    }); 
 });
 
 //EDIT
 router.get("/:id/edit", function(req,res){
-    db.blog.findByPk({where: {id: req.params.id}}, function(err, foundBlog){
-        res.render("edit", {blog: foundBlog});
-    });
+    var id = req.params.id
+    db.blog.findAll({where: {id},attributes: ['title','content', 'id']}).then(function(foundBlog){
+        res.render("edit", {blogs: foundBlog});
+    })
 });
 
 //UPDATE
 router.put("/:id", function(req,res){
-    db.blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog){
-        if(err){
-            res.redirect("/blog");
-        } else {
-            res.redirect("/blog/" + req.params.id);
-          
-        }
-    });
+    var id = req.params.id;
+    var updatedValues = {title:req.body.title, content: req.body.content};
+    db.blog.update(updatedValues,{where: {id}}).then(function(err){
+            res.redirect("/blog/" + id);
+        })
 });
-
+// DELETE
 router.delete("/:id", function(req,res){
-    Blog.findByIdAndRemove(req.params.id, function(err){
-        if(err){
-            console.log("/blog");
-        } else {
-            res.redirect("/blog")
-        }
+    var id = req.params.id
+    db.blog.destroy({where: {id}}, function(err){
+     res.redirect("/blog")
+        
     })
 });
-
+// SEARCH
 router.post("/results", function(req,res){
     var query = req.body.searchData
     Blog.find({$text : {$search: query}}, function(err, userSD){
