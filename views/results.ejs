@@ -11,8 +11,7 @@
             <% results.forEach(function(blog){ %>
                 <div class="ui six wide centered column row ">
                         <h4><%= blog.title %></h4>
-                        <summary>Created by <%= blog.author.username %></summary>
-                        <a href="/blog/<%=blog._id %>" class="ui small basic button very padded">See full</a> 
+                        <a href="/blog/<%=blog.id %>" class="ui small basic button very padded">See full</a> 
                 </div>
             <% }) %>
 

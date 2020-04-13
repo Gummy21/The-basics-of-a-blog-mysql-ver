@@ -1,6 +1,7 @@
 var express = require("express");
 var router  = express.Router();
 var db = require('../app/models');
+const { QueryTypes } = require('sequelize');
 
 //INDEX
 router.get("/", function(req,res) { 
@@ -19,9 +20,9 @@ router.post("/",function(req,res){
    const content = req.body.content;
    const userId    = req.session.user.id
    const newBlog = { title: title, content: content, userId: userId};
-   db.blog.create(newBlog, function(){
+   db.blog.create(newBlog).then(
        res.redirect("/blog")
-   });
+    );
 });
 //SHOW
 router.get("/:id", function(req,res){
@@ -50,21 +51,22 @@ router.put("/:id", function(req,res){
 // DELETE
 router.delete("/:id", function(req,res){
     var id = req.params.id
-    db.blog.destroy({where: {id}}, function(err){
+    db.blog.destroy({where: {id}}).then(
      res.redirect("/blog")
-        
-    })
+    );
 });
 // SEARCH
 router.post("/results", function(req,res){
     var query = req.body.searchData
-    Blog.find({$text : {$search: query}}, function(err, userSD){
-        if(err){
-            console.log(err)
-        } else{
-            res.render("results", {results: userSD});
-        }
-    });
+    db.sequelize.query('SELECT * FROM blog WHERE title LIKE :search_title',
+    {
+        replacements: {search_title: query + "%"},
+        type: QueryTypes.SELECT
+    }).then(function (userSD){
+        res.render("results", {results: userSD})
+    })
+    
 });
+
 
 module.exports = router;
